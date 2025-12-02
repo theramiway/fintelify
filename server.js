@@ -18,7 +18,7 @@ const MONGO_URI = process.env.MONGO_URI;
 // Change: CORS Configuration for Production
 // This allows your React app to talk to this backend once deployed.
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:3000", "https://YOUR-FRONTEND-URL.onrender.com"],
+    origin: ["http://localhost:5173", "http://localhost:3000", "https://fintelify-frontend.onrender.com"],
     credentials: true // Important if you use cookies/sessions
 }));
 
@@ -63,3 +63,4 @@ connectDB().then(() => {
     console.log(`🚀 Server running on port ${PORT}`)
   );
 });
+
