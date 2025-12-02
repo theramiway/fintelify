@@ -1,24 +1,33 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const path = require("path");
+// const path = require("path"); // <--- REMOVE: Not strictly needed for basic config
 const cors = require("cors");
 
-// Load environment variables from .env file
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+// Load environment variables
+// Change: Simplified config. In production, this does nothing (as it should), 
+// but locally it looks for standard .env
+dotenv.config(); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // --- Middleware ---
-app.use(cors());                 // Enable CORS
-app.use(express.json());         // Parse JSON request bodies
+
+// Change: CORS Configuration for Production
+// This allows your React app to talk to this backend once deployed.
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:3000", "https://YOUR-FRONTEND-URL.onrender.com"],
+    credentials: true // Important if you use cookies/sessions
+}));
+
+app.use(express.json());
 
 // --- MongoDB Connection Function ---
 const connectDB = async () => {
   if (!MONGO_URI) {
-    console.error("❌ FATAL ERROR: MONGO_URI is not defined in the .env file.");
+    console.error("❌ FATAL ERROR: MONGO_URI is not defined.");
     process.exit(1);
   }
 
@@ -35,21 +44,22 @@ const connectDB = async () => {
 const goalRoutes = require("./routes/goalRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const insightRoutes = require("./routes/insightRoutes");
-const authRoutes = require("./routes/authRoutes"); // <--- NEW
+const authRoutes = require("./routes/authRoutes");
 
 app.use("/api/goals", goalRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/insights", insightRoutes);
-app.use("/api/auth", authRoutes); // <--- NEW (login/register)
+app.use("/api/auth", authRoutes);
 
 // Simple root route for testing
 app.get("/", (req, res) => {
   res.send("Finance App Backend API is running... 💰");
 });
 
-// --- Start Server and Connect to DB ---
+// --- Start Server ---
 connectDB().then(() => {
   app.listen(PORT, () =>
-    console.log(`🚀 Server running on http://localhost:${PORT}`)
+    // Change: Removed 'localhost' to avoid confusion in cloud logs
+    console.log(`🚀 Server running on port ${PORT}`)
   );
 });
