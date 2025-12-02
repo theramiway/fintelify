@@ -20,7 +20,7 @@ interface GoalFormData {
 }
 
 const Goals = () => {
-  const API_URL = "http://localhost:5000/api/goals";
+  const API_URL = "https://fintelify.onrender.com/api/goals";
 
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
