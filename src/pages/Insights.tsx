@@ -20,7 +20,7 @@ interface InsightFormData {
 }
 
 const Insights = () => {
-  const API_URL = "http://localhost:5000/api/insights";
+  const API_URL = "https://fintelify.onrender.com/api/insights";
 
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
