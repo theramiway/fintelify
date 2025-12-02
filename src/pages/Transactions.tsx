@@ -17,7 +17,7 @@ interface Transaction {
 }
 
 const Transactions = () => {
-  const API_URL = "http://localhost:5000/api/transactions";
+  const API_URL = "https://fintelify.onrender.com/api/transactions";
   
   // --- 1. DUMMY INITIAL BALANCE ---
   // Change this number to whatever starting balance you want
